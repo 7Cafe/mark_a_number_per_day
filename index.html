@@ -295,16 +295,33 @@
 
       // 改为函数形式：
       let supabase;
-      function initSupabase() {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-          auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            storage: window.localStorage,
-          },
-        });
+function forceRecreateClient() {
+  try {
+    // 尝试用旧客户端登出以清理本地状态（忽略可能发生的错误）
+    if (supabase) {
+      supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+    }
+  } catch (e) {}
+  
+  // 创建一个全新的客户端实例
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { 
+      persistSession: true, 
+      autoRefreshToken: true, 
+      storage: window.localStorage 
+    },
+    // 添加一个简单的fetch超时，避免请求无限期挂起
+    global: {
+      fetch: (url, options = {}) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
+        return fetch(url, { ...options, signal: controller.signal })
+          .finally(() => clearTimeout(timeoutId));
       }
-      initSupabase();  // 页面加载时初始化一次
+    }
+  });
+  console.log('Supabase client force recreated.');
+}
 
       const WEEKDAYS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
 
@@ -581,7 +598,7 @@
       }
 
     async function handleLogin() {
-    initSupabase();
+    forceRecreateClient();
     const inputs = validateInputs();
     if (!inputs) return;
   
@@ -625,7 +642,7 @@
     }
 
       async function handleSignUp() {
-  initSupabase();
+  forceRecreateClient();
   const inputs = validateInputs();
   if (!inputs) return;
 
