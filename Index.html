@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="测试应用" />
+  <meta name="theme-color" content="#4f46e5" />
+  <title>GitHub Pages 测试页</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f9fafb 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #059669;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    .counter {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 10px 0;
+      color: var(--primary);
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #374151;
+      margin-top: 10px;
+    }
+
+    .info {
+      background: #f3f4f6;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: left;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+    }
+
+    .info-row + .info-row {
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .label {
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .value {
+      font-weight: 600;
+      text-align: right;
+      word-break: break-all;
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="status">
+      <span class="dot"></span>
+      <span id="statusText">部署成功</span>
+    </div>
+
+    <h1>🎉 GitHub Pages 测试页</h1>
+    <p class="subtitle">如果你能看到这个页面，说明托管已经生效。</p>
+
+    <div class="counter" id="counter">0</div>
+    <button id="clickBtn">点我 +1</button>
+    <button class="secondary" id="copyBtn">复制当前网址</button>
+
+    <div class="info">
+      <div class="info-row">
+        <span class="label">当前网址</span>
+        <span class="value" id="url">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">运行模式</span>
+        <span class="value" id="mode">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">网络状态</span>
+        <span class="value" id="online">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">当前时间</span>
+        <span class="value" id="time">-</span>
+      </div>
+    </div>
+
+    <div class="footer">上传到 GitHub Pages 根目录即可访问</div>
+  </div>
+
+  <script>
+    const counterEl = document.getElementById("counter");
+    const clickBtn = document.getElementById("clickBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const urlEl = document.getElementById("url");
+    const modeEl = document.getElementById("mode");
+    const onlineEl = document.getElementById("online");
+    const timeEl = document.getElementById("time");
+    const statusText = document.getElementById("statusText");
+
+    let count = 0;
+
+    clickBtn.addEventListener("click", () => {
+      count++;
+      counterEl.textContent = count;
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        copyBtn.textContent = "已复制 ✅";
+        setTimeout(() => {
+          copyBtn.textContent = "复制当前网址";
+        }, 1500);
+      } catch (e) {
+        prompt("手动复制网址：", location.href);
+      }
+    });
+
+    function updateTime() {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleString("zh-CN", { hour12: false });
+    }
+
+    function updateOnline() {
+      onlineEl.textContent = navigator.onLine ? "在线" : "离线";
+    }
+
+    function updateMode() {
+      const isStandalone =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true;
+
+      modeEl.textContent = isStandalone ? "独立 App 模式" : "浏览器模式";
+
+      if (isStandalone) {
+        statusText.textContent = "已添加到主屏幕";
+      }
+    }
+
+    urlEl.textContent = location.href;
+    updateTime();
+    updateOnline();
+    updateMode();
+
+    setInterval(updateTime, 1000);
+    window.addEventListener("online", updateOnline);
+    window.addEventListener("offline", updateOnline);
+
+    const mq = window.matchMedia("(display-mode: standalone)");
+    if (mq.addEventListener) {
+      mq.addEventListener("change", updateMode);
+    } else {
+      mq.addListener(updateMode);
+    }
+  </script>
+</body>
+</html>
