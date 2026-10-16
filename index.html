@@ -293,14 +293,18 @@
       const SUPABASE_URL = 'https://shybldupzoylnumbcxev.supabase.co';
       const SUPABASE_KEY = 'sb_publishable_lFgzqTsMYodX3s0r6H_JNA_bs6jDV3K';
 
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        auth: {
-          // 保持登录状态，不主动登出就一直有效
-          persistSession: true,
-          autoRefreshToken: true,
-          storage: window.localStorage,
-        },
-      });
+      // 改为函数形式：
+      let supabase;
+      function initSupabase() {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            storage: window.localStorage,
+          },
+        });
+      }
+      initSupabase();  // 页面加载时初始化一次
 
       const WEEKDAYS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
 
@@ -577,6 +581,7 @@
       }
 
       async function handleLogin() {
+        initSupabase();
         const inputs = validateInputs();
         if (!inputs) return;
 
@@ -608,6 +613,7 @@
       }
 
       async function handleSignUp() {
+        initSupabase(); 
         const inputs = validateInputs();
         if (!inputs) return;
 
