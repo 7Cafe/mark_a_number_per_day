@@ -590,7 +590,8 @@
           });
 
           if (error) {
-            setMsg('登录失败：' + error.message, 'error');
+            console.error('[登录 error]', error);
+            setMsg('登录失败：\n' + formatError(error), 'error');
             return;
           }
           if (data && data.session && data.user) {
@@ -599,7 +600,8 @@
             setMsg('登录失败，请重试', 'error');
           }
         } catch (e) {
-          setMsg('登录失败：' + (e.message || e), 'error');
+          console.error('[登录异常]', e);
+          setMsg('登录失败：\n' + formatError(e), 'error');
         } finally {
           setLoading(false);
         }
@@ -619,7 +621,8 @@
           });
 
           if (error) {
-            setMsg('注册失败：' + error.message, 'error');
+            console.error('[注册 error]', error);
+            setMsg('注册失败：\n' + formatError(error), 'error');
             return;
           }
 
@@ -637,7 +640,8 @@
 
           setMsg('注册失败，请重试', 'error');
         } catch (e) {
-          setMsg('注册失败：' + (e.message || e), 'error');
+          console.error('[注册异常]', e);
+          setMsg('注册失败：\n' + formatError(e), 'error');
         } finally {
           setLoading(false);
         }
