@@ -22,11 +22,7 @@
     }
 
     * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
+    html, body { margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -50,7 +46,6 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
     }
 
-    /* ---------- 月份导航 ---------- */
     .month-nav {
       display: flex;
       align-items: center;
@@ -74,9 +69,7 @@
       transition: background 0.15s;
     }
 
-    .month-nav button:active {
-      background: #dde3ff;
-    }
+    .month-nav button:active { background: #dde3ff; }
 
     .month-label {
       font-size: 17px;
@@ -84,7 +77,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* ---------- 本月合计 ---------- */
     .month-total-row {
       text-align: center;
       margin-bottom: 14px;
@@ -106,7 +98,6 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* ---------- 星期行 ---------- */
     .weekdays {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -117,7 +108,6 @@
       user-select: none;
     }
 
-    /* ---------- 日历网格 ---------- */
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -143,19 +133,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .day:not(.blank):hover {
-      background: #f3f4f6;
-    }
+    .day:not(.blank):hover { background: #f3f4f6; }
+    .day.blank { pointer-events: none; visibility: hidden; }
 
-    .day.blank {
-      pointer-events: none;
-      visibility: hidden;
-    }
-
-    .day-num {
-      font-size: 14px;
-      line-height: 1;
-    }
+    .day-num { font-size: 14px; line-height: 1; }
 
     .day-value {
       font-size: 11px;
@@ -170,27 +151,12 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* 今天（未被选中时） */
-    .day.today:not(.selected) {
-      background: var(--primary-soft);
-    }
-
-    .day.today:not(.selected) .day-num {
-      color: var(--primary);
-      font-weight: 700;
-    }
-
-    /* 选中 */
-    .day.selected {
-      background: var(--primary);
-    }
-
+    .day.today:not(.selected) { background: var(--primary-soft); }
+    .day.today:not(.selected) .day-num { color: var(--primary); font-weight: 700; }
+    .day.selected { background: var(--primary); }
     .day.selected .day-num,
-    .day.selected .day-value {
-      color: #ffffff;
-    }
+    .day.selected .day-value { color: #ffffff; }
 
-    /* ---------- 当前日期 ---------- */
     .selected-info {
       margin-top: 20px;
       padding: 14px 16px;
@@ -211,10 +177,7 @@
       color: var(--primary);
     }
 
-    /* ---------- 输入区 ---------- */
-    .input-area {
-      margin-top: 16px;
-    }
+    .input-area { margin-top: 16px; }
 
     #dataInput {
       width: 100%;
@@ -230,15 +193,8 @@
       font-variant-numeric: tabular-nums;
     }
 
-    #dataInput:focus {
-      border-color: var(--primary);
-      background: #ffffff;
-    }
-
-    #dataInput::placeholder {
-      color: #9ca3af;
-      font-variant-numeric: normal;
-    }
+    #dataInput:focus { border-color: var(--primary); background: #ffffff; }
+    #dataInput::placeholder { color: #9ca3af; font-variant-numeric: normal; }
 
     #confirmBtn {
       width: 100%;
@@ -255,12 +211,8 @@
       transition: transform 0.1s, background 0.15s;
     }
 
-    #confirmBtn:active {
-      transform: scale(0.99);
-      background: #4338ca;
-    }
+    #confirmBtn:active { transform: scale(0.99); background: #4338ca; }
 
-    /* ---------- 弹窗 ---------- */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -272,9 +224,7 @@
       z-index: 100;
     }
 
-    .modal-backdrop.show {
-      display: flex;
-    }
+    .modal-backdrop.show { display: flex; }
 
     .modal {
       background: #ffffff;
@@ -291,11 +241,7 @@
       to   { transform: scale(1);    opacity: 1; }
     }
 
-    .modal-title {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+    .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
 
     .modal-text {
       font-size: 14px;
@@ -320,25 +266,11 @@
       cursor: pointer;
     }
 
-    #modalCancel {
-      background: #f3f4f6;
-      color: #374151;
-    }
+    #modalCancel { background: #f3f4f6; color: #374151; }
+    #modalCancel:active { background: #e5e7eb; }
+    #modalConfirm { background: var(--primary); color: #ffffff; }
+    #modalConfirm:active { background: #4338ca; }
 
-    #modalCancel:active {
-      background: #e5e7eb;
-    }
-
-    #modalConfirm {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    #modalConfirm:active {
-      background: #4338ca;
-    }
-
-    /* ---------- Toast ---------- */
     .toast {
       position: fixed;
       left: 50%;
@@ -356,13 +288,101 @@
       white-space: nowrap;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ---------- 登录界面 ---------- */
+    #loginScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 300;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    #loginScreen h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    #loginScreen p.sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 24px;
+    }
+
+    #emailInput {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+      background: #ffffff;
+    }
+
+    #emailInput:focus { border-color: var(--primary); }
+
+    #loginBtn {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 12px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    #loginBtn:disabled { opacity: 0.6; cursor: default; }
+
+    #loginMsg {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 320px;
+      line-height: 1.5;
+    }
+
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
+
+  <!-- 加载中 -->
+  <div id="loadingScreen">加载中…</div>
+
+  <!-- 登录界面 -->
+  <div id="loginScreen">
+    <h2>日历记录</h2>
+    <p class="sub">输入邮箱获取登录链接</p>
+    <input id="emailInput" type="email" placeholder="your@email.com"
+           autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <button id="loginBtn">发送登录链接</button>
+    <p id="loginMsg"></p>
+  </div>
+
+  <!-- 主应用 -->
   <div class="app">
     <header class="month-nav">
       <button id="prevMonth" aria-label="上个月">‹</button>
@@ -416,54 +436,38 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net.cn/npm/@supabase/supabase-js@2"></script>
+
   <script>
     (function () {
       'use strict';
 
-      const STORAGE_KEY = 'daily-notes-app-v1';
+      /* =========================================================
+       * 【第 1 处修改】填上你自己的 Supabase 信息
+       * ========================================================= */
+      const SUPABASE_URL = 'https://shybldupzoylnumbcxev.supabase.co';
+      const SUPABASE_KEY = 'sb_publishable_lFgzqTsMYodX3s0r6H_JNA_bs6jDV3K';
+
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
       const WEEKDAYS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
 
-      /* =========================================================
-       * 存储层（以后换数据库，只改这两个函数）
-       *
-       * 数据结构：{ "2026-10-16": 42, "2026-10-17": 8 }
-       * ========================================================= */
-      function loadData() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          const parsed = raw ? JSON.parse(raw) : {};
-          // 兼容旧数据：把字符串数字转成 number
-          const clean = {};
-          Object.keys(parsed).forEach(function (k) {
-            const v = parsed[k];
-            const n = typeof v === 'number' ? v : parseInt(v, 10);
-            if (Number.isFinite(n)) clean[k] = n;
-          });
-          return clean;
-        } catch (e) {
-          console.warn('读取数据失败', e);
-          return {};
-        }
-      }
+      let currentUser = null;
+      let allData = {};
 
-      function saveData(data) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-          return true;
-        } catch (e) {
-          console.warn('保存数据失败', e);
-          return false;
-        }
-      }
+      const today = new Date();
+      const todayStr = formatDate(today.getFullYear(), today.getMonth(), today.getDate());
+
+      let viewYear = today.getFullYear();
+      let viewMonth = today.getMonth();
+      let selectedDate = todayStr;
 
       /* =========================================================
        * 工具函数
        * ========================================================= */
-      function pad2(n) {
-        return String(n).padStart(2, '0');
-      }
+      function pad2(n) { return String(n).padStart(2, '0'); }
 
-      // m 是 0-based
       function formatDate(y, m, d) {
         return y + '-' + pad2(m + 1) + '-' + pad2(d);
       }
@@ -480,19 +484,14 @@
       }
 
       /* =========================================================
-       * 状态
-       * ========================================================= */
-      const today = new Date();
-      const todayStr = formatDate(today.getFullYear(), today.getMonth(), today.getDate());
-
-      let allData = loadData();
-      let viewYear = today.getFullYear();
-      let viewMonth = today.getMonth();
-      let selectedDate = todayStr;
-
-      /* =========================================================
        * DOM
        * ========================================================= */
+      const loadingScreen  = document.getElementById('loadingScreen');
+      const loginScreen    = document.getElementById('loginScreen');
+      const emailInput     = document.getElementById('emailInput');
+      const loginBtn       = document.getElementById('loginBtn');
+      const loginMsg       = document.getElementById('loginMsg');
+
       const monthLabel     = document.getElementById('monthLabel');
       const monthTotalEl   = document.getElementById('monthTotal');
       const calendarGrid   = document.getElementById('calendarGrid');
@@ -527,19 +526,16 @@
       function renderCalendar() {
         const firstDay    = new Date(viewYear, viewMonth, 1);
         const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-        // 周一为第一列：getDay() 里 0=周日，先 +6 再取模
         const startOffset = (firstDay.getDay() + 6) % 7;
 
         const frag = document.createDocumentFragment();
 
-        // 月初空白格
         for (let i = 0; i < startOffset; i++) {
           const blank = document.createElement('div');
           blank.className = 'day blank';
           frag.appendChild(blank);
         }
 
-        // 日期格
         for (let d = 1; d <= daysInMonth; d++) {
           const dateStr = formatDate(viewYear, viewMonth, d);
           const value = allData[dateStr];
@@ -603,13 +599,8 @@
 
       function changeMonth(delta) {
         viewMonth += delta;
-        if (viewMonth < 0) {
-          viewMonth = 11;
-          viewYear -= 1;
-        } else if (viewMonth > 11) {
-          viewMonth = 0;
-          viewYear += 1;
-        }
+        if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+        else if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
         renderMonthLabel();
         renderMonthTotal();
         renderCalendar();
@@ -639,14 +630,69 @@
         modalConfirm.onclick = null;
       }
 
-      // 真正的写入动作，value 为 null 表示删除
-      function commit(value) {
+      /* =========================================================
+       * 【第 2 处修改】数据读写改为 Supabase
+       * ========================================================= */
+      async function loadDataFromSupabase() {
+        if (!currentUser) return;
+
+        const { data, error } = await supabase
+          .from('entries')
+          .select('date, value')
+          .eq('user_id', currentUser.id);
+
+        if (error) {
+          console.error('加载数据失败:', error);
+          showToast('加载数据失败');
+          return;
+        }
+
+        allData = {};
+        (data || []).forEach(function (row) {
+          allData[row.date] = row.value;
+        });
+      }
+
+      async function saveToSupabase(dateStr, value) {
+        if (!currentUser) return false;
+
+        if (value === null) {
+          const { error } = await supabase
+            .from('entries')
+            .delete()
+            .eq('user_id', currentUser.id)
+            .eq('date', dateStr);
+          if (error) { console.error('删除失败:', error); return false; }
+          return true;
+        }
+
+        const { error } = await supabase
+          .from('entries')
+          .upsert(
+            { user_id: currentUser.id, date: dateStr, value: value },
+            { onConflict: 'user_id,date' }
+          );
+        if (error) { console.error('保存失败:', error); return false; }
+        return true;
+      }
+
+      /* =========================================================
+       * 【第 3 处修改】commit 改为异步
+       * ========================================================= */
+      async function commit(value) {
+        const ok = await saveToSupabase(selectedDate, value);
+
+        if (!ok) {
+          showToast('保存失败，请重试');
+          return;
+        }
+
         if (value === null) {
           delete allData[selectedDate];
         } else {
           allData[selectedDate] = value;
         }
-        saveData(allData);
+
         renderMonthTotal();
         renderCalendar();
         showToast(value === null ? '已清空该日数据' : '已保存');
@@ -656,7 +702,6 @@
         const raw = dataInput.value.trim();
         const existing = allData[selectedDate];
 
-        // 空输入 → 清空该日
         if (raw === '') {
           if (existing === undefined) {
             showToast('该日没有数据');
@@ -668,7 +713,6 @@
           return;
         }
 
-        // 数字校验
         if (!/^\d+$/.test(raw)) {
           showToast('请输入数字');
           return;
@@ -680,7 +724,6 @@
           return;
         }
 
-        // 已有数据且不同 → 询问覆盖
         if (existing !== undefined && existing !== value) {
           openModal(
             '覆盖确认',
@@ -694,8 +737,85 @@
       }
 
       /* =========================================================
+       * 【第 4 处修改】登录相关
+       * ========================================================= */
+      async function sendMagicLink() {
+        const email = emailInput.value.trim();
+        if (!email) { loginMsg.textContent = '请输入邮箱'; return; }
+
+        loginBtn.disabled = true;
+        loginMsg.textContent = '发送中…';
+
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email,
+          options: {
+            shouldCreateUser: true,
+            emailRedirectTo: window.location.origin + window.location.pathname,
+          },
+        });
+
+        if (error) {
+          loginMsg.textContent = '发送失败：' + error.message;
+          loginBtn.disabled = false;
+        } else {
+          loginMsg.textContent = '已发送！请到邮箱点击链接登录（注意查看垃圾邮件）。';
+        }
+      }
+
+      async function enterApp(user) {
+        currentUser = user;
+        loginScreen.style.display = 'none';
+        loadingScreen.style.display = 'flex';
+
+        await loadDataFromSupabase();
+
+        loadingScreen.style.display = 'none';
+        renderAll();
+      }
+
+      function showLogin() {
+        currentUser = null;
+        allData = {};
+        loadingScreen.style.display = 'none';
+        loginScreen.style.display = 'flex';
+      }
+
+      async function init() {
+        // 处理邮箱魔法链接回调（URL 中带有 code 参数）
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('code')) {
+          // 让 SDK 通过 URL 里的 code 完成登录
+          await supabase.auth.exchangeCodeForSession(window.location.href);
+          // 清掉 URL 中的参数，看起来干净
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (session && session.user) {
+          await enterApp(session.user);
+        } else {
+          showLogin();
+        }
+      }
+
+      /* =========================================================
        * 事件绑定
        * ========================================================= */
+      loginBtn.addEventListener('click', sendMagicLink);
+      emailInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); sendMagicLink(); }
+      });
+
+      // 登录状态变化
+      supabase.auth.onAuthStateChange(function (event, session) {
+        if (event === 'SIGNED_IN' && session && session.user) {
+          if (!currentUser) enterApp(session.user);
+        } else if (event === 'SIGNED_OUT') {
+          showLogin();
+        }
+      });
+
       document.getElementById('prevMonth').addEventListener('click', function () {
         changeMonth(-1);
       });
@@ -706,19 +826,14 @@
       confirmBtn.addEventListener('click', handleConfirm);
 
       dataInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleConfirm();
-        }
+        if (e.key === 'Enter') { e.preventDefault(); handleConfirm(); }
       });
 
-      // 只允许数字：实时过滤输入和粘贴
       dataInput.addEventListener('input', function () {
         const cleaned = this.value.replace(/[^0-9]/g, '');
         if (cleaned !== this.value) {
           const pos = this.selectionStart;
           this.value = cleaned;
-          // 尽量保持光标位置
           const newPos = Math.max(0, pos - (this.value.length - cleaned.length));
           try { this.setSelectionRange(newPos, newPos); } catch (e) {}
         }
@@ -730,11 +845,10 @@
       });
 
       /* =========================================================
-       * 初始化
+       * 启动
        * ========================================================= */
-      renderAll();
+      init();
     })();
   </script>
-  <script src="https://cdn.jsdelivr.net.cn/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
