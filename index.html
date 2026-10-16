@@ -515,6 +515,42 @@
       /* =========================================================
        * 登录：邮箱 + 密码
        * ========================================================= */
+      function formatError(err) {
+        if (!err) return '未知错误（err 为空）';
+        if (typeof err === 'string') return err;
+
+        const lines = [];
+
+        try {
+          // 收集所有自身属性，包括非枚举的
+          const keys = Object.getOwnPropertyNames(err);
+          keys.forEach(function (k) {
+            if (k === 'stack') return; // 堆栈太长，先跳过
+            const v = err[k];
+            if (v === undefined || v === null) return;
+
+            let str;
+            if (typeof v === 'object') {
+              try { str = JSON.stringify(v); }
+              catch (e) { str = String(v); }
+            } else {
+              str = String(v);
+            }
+            lines.push(k + ': ' + str);
+          });
+        } catch (e) {
+          lines.push('（无法枚举错误属性：' + String(e) + '）');
+        }
+
+        if (lines.length === 0) {
+          return String(err);
+        }
+
+        // 附加一下当前 URL，排查跨域问题时有用
+        lines.push('URL: ' + location.href);
+
+        return lines.join('\n');
+      }
       function setMsg(text, type) {
         loginMsg.textContent = text || '';
         loginMsg.className = type || '';
