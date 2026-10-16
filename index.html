@@ -580,78 +580,95 @@
         return { email: email, password: password };
       }
 
-      async function handleLogin() {
-        initSupabase();
-        const inputs = validateInputs();
-        if (!inputs) return;
-
-        setLoading(true);
-        setMsg('登录中…');
-
-        try {
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email: inputs.email,
-            password: inputs.password,
-          });
-
-          if (error) {
-            console.error('[登录 error]', error);
-            setMsg('登录失败：\n' + formatError(error), 'error');
-            return;
-          }
-          if (data && data.session && data.user) {
-            await enterApp(data.user);
-          } else {
-            setMsg('登录失败，请重试', 'error');
-          }
-        } catch (e) {
-          console.error('[登录异常]', e);
-          setMsg('登录失败：\n' + formatError(e), 'error');
-        } finally {
-          setLoading(false);
+    async function handleLogin() {
+    initSupabase();
+    const inputs = validateInputs();
+    if (!inputs) return;
+  
+    setLoading(true);
+    setMsg('登录中…');
+  
+    const MAX_RETRIES = 3;
+    let lastError = null;
+  
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: inputs.email,
+          password: inputs.password,
+        });
+  
+        if (!error && data?.session) {
+          await enterApp(data.user);
+          return;
         }
+        lastError = error;
+      } catch (e) {
+        lastError = e;
+        console.error(`[登录尝试 ${attempt + 1}]`, e);
       }
+  
+      // 仅对可重试错误进行等待
+      if (lastError?.name === 'AuthRetryableFetchError' || lastError?.status === 0) {
+        const delay = 1000 * Math.pow(2, attempt); // 1s, 2s, 4s
+        setMsg(`登录失败，正在重试（${attempt + 1}/${MAX_RETRIES}）…`);
+        await new Promise(r => setTimeout(r, delay));
+      } else {
+        break; // 其他错误（如密码错误）无需重试
+      }
+    }
+  
+    // 全部重试失败后展示最终错误
+    console.error('[登录最终失败]', lastError);
+    setMsg('登录失败：\n' + formatError(lastError), 'error');
+    setLoading(false);
+    }
 
       async function handleSignUp() {
-        initSupabase(); 
-        const inputs = validateInputs();
-        if (!inputs) return;
+  initSupabase();
+  const inputs = validateInputs();
+  if (!inputs) return;
 
-        setLoading(true);
-        setMsg('注册中…');
+  setLoading(true);
+  setMsg('注册中…');
 
-        try {
-          const { data, error } = await supabase.auth.signUp({
-            email: inputs.email,
-            password: inputs.password,
-          });
+  const MAX_RETRIES = 3;
+  let lastError = null;
 
-          if (error) {
-            console.error('[注册 error]', error);
-            setMsg('注册失败：\n' + formatError(error), 'error');
-            return;
-          }
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: inputs.email,
+        password: inputs.password,
+      });
 
-          if (data && data.session && data.user) {
-            // 项目未开启邮箱确认 → 直接进入
-            await enterApp(data.user);
-            return;
-          }
-
-          if (data && data.user) {
-            // 项目开启了邮箱确认 → 需要用户去邮箱点确认
-            setMsg('注册成功！请到邮箱点击确认链接，然后回到这里登录。', 'success');
-            return;
-          }
-
-          setMsg('注册失败，请重试', 'error');
-        } catch (e) {
-          console.error('[注册异常]', e);
-          setMsg('注册失败：\n' + formatError(e), 'error');
-        } finally {
+      if (!error) {
+        if (data?.session && data?.user) { await enterApp(data.user); return; }
+        if (data?.user) {
+          setMsg('注册成功！请到邮箱点击确认链接，然后回到这里登录。', 'success');
           setLoading(false);
+          return;
         }
       }
+      lastError = error;
+    } catch (e) {
+      lastError = e;
+      console.error(`[注册尝试 ${attempt + 1}]`, e);
+    }
+
+    if (lastError?.name === 'AuthRetryableFetchError' || lastError?.status === 0) {
+      const delay = 1000 * Math.pow(2, attempt);
+      setMsg(`注册失败，正在重试（${attempt + 1}/${MAX_RETRIES}）…`);
+      await new Promise(r => setTimeout(r, delay));
+    } else {
+      break;
+    }
+  }
+
+  console.error('[注册最终失败]', lastError);
+  setMsg('注册失败：\n' + formatError(lastError), 'error');
+  setLoading(false);
+}
 
       async function enterApp(user) {
         currentUser = user;
